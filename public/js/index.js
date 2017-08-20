@@ -1,9 +1,26 @@
 var socket=io();
 
-function scrollToBottom(){
+let countMsg = 0;
+function isElementOutViewport (el) {
+  if (typeof jQuery !== 'undefined' && el instanceof jQuery)
+    el = el[0];
+  const rect = el.getBoundingClientRect();
+  // console.log(rect.top);
+  // console.log(window.innerHeight);
+  return rect.bottom < 0 || rect.right < 0 || rect.left > window.innerWidth || rect.top > window.innerHeight;
+}
+
+function scrollToBottom(fullscroll){
   //Selectors
   var messages=jQuery('#messages');
   var newMessage=messages.children('li:last-child');
+
+  if (isElementOutViewport(newMessage)) {
+    countMsg++;
+    const template = jQuery('#newMsg-template').html();
+    const html = Mustache.render(template,{countMsg});
+    jQuery('#messages-preview').html(html);
+  }
   //Heights
   var scrollTop = messages.prop('scrollTop');
   var clientHeight=messages.prop('clientHeight');
@@ -11,9 +28,20 @@ function scrollToBottom(){
   var newMessageHeight=newMessage.innerHeight();
   var lastMessageHeight=newMessage.prev().innerHeight();
 
+  // console.log(scrollHeight)
+
   if((scrollTop + clientHeight + newMessageHeight +lastMessageHeight)>=scrollHeight){
-      messages.scrollTop(scrollHeight);
+    messages.animate({scrollTop:scrollHeight}, 1000);
+    return false;
   }
+  if (fullscroll) {
+   messages.scrollTop(scrollHeight);
+   countMsg = 0;
+   // hide the button
+   const countbutton = jQuery('#divCheckbox');
+  //  console.log(countbutton)
+   countbutton.remove();
+ }
 }
 
 socket.on('connect',function(){

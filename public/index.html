@@ -2,6 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
 	<link rel="stylesheet" href="/css/styles.css">
 </head>
 
@@ -9,11 +11,18 @@
 	<div class="chat__sidebar">
 		<h3>People</h3>
 		<div id="users">
-
 		</div>
 	</div>
 
 	<div class="chat__main">
+		<script id="newMsg-template" type="text/template">
+	 		<div id="divCheckbox" style="visibility: visible; display:inline;">
+ 				<button style="display:block;width:20%;margin:0 auto;" onclick="scrollToBottom(true)">{{countMsg}} new messages</button>
+    	</div>
+		</script>
+
+		<div id="messages-preview"></div>
+
 		<ol id="messages" class="chat__messages"></ol>
 
 		<div class="chat__footer">
@@ -48,7 +57,7 @@
 			</div>
 			<div class="message__body">
 				<p>
-					<a href="{{url}}" target="_blank">My location</a>
+					<a href="{{url}}" a></a>
 				</p>
 			</div>
 		</li>
@@ -61,5 +70,6 @@
 <script src="/js/libs/moment.js"></script>
 <script src="js/libs/mustache.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
+
 </body>
 </html>
