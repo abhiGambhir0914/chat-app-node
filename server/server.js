@@ -4,6 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const {generateMessage,generateLocationMessage}=require('./utils/message.js');
+const {isRealString}=require('./utils/validation.js');
 const publicPath= path.join(__dirname,'../public');
 const port=process.env.PORT || 3000;
 
@@ -16,10 +17,17 @@ app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
   console.log('New User Connected');
 
+ //listening to joining page
+  socket.on('join',(params,callback)=>{
+    if(!isRealString(params.name) || !isRealString(params.room)){
+      callback('Name and room name are required.');
+    }
+    // callback();
+  });
+
   socket.emit('newMessage',generateMessage('Admin','Welcome to the chat app!!'));
 
   socket.broadcast.emit('newMessage',generateMessage('Admin','New user joined'));
-
 
   socket.on('createMessage',(msg,callback)=>{
     console.log('Message: ',msg);
@@ -30,7 +38,7 @@ io.on('connection',(socket)=>{
     //     text: msg.text,
     //     createdAt: new Date().getTime()
     // });
-  });
+});
 
   socket.on('createLocMsg',(coords)=>{
     io.emit('newLocationMessage',generateLocationMessage('User',coords.latitude,coords.longitude));
