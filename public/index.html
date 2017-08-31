@@ -7,9 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
   <link rel="stylesheet" href="/css/styles.css">
+  <div class="chat__sidebar">
+    <h3>Chat Rooms</h3>
+    <div id="rooms"></div>
+  </div>
 </head>
 
-<body class="centered-form">
+<body class="centered-form" onLoad="loadDropDown()">
 
   <div class="centered-form__form">
     <form action="/chat.html">
@@ -22,13 +26,31 @@
       </div>
       <div class="form-field">
         <label>Room Name</label>
-        <input type="text" name="room"/>
+        <input id="room-text" type="text" name="room"/>
       </div>
+
+      <div>
+        <label>Online Chat Rooms</label>
+      </div>
+
+      <div>
+        <select id="open-rooms" onclick="onSelectedChanged()" onChange="onSelectedChanged()">
+          <option value="room1">room1</option>
+          <option value="room2">room2</option>
+          <option value="room3">room3</option>
+        </select>
+      </div>
+
       <div class="form-field">
         <button>Join</button>
       </div>
     </form>
   </div>
+
+  <script src="/js/libs/mustache.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="/js/libs/jquery-3.2.1.min.js"></script>
+  <script src="/js/index.js"></script>
 
 </body>
 </html>

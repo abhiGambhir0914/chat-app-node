@@ -64,9 +64,8 @@ socket.on('updateUserList',function(users){
   var ul=jQuery('<ul></ul>');
 
   users.forEach(function(user){
-    ul.append(jQuery('<li></li>').text(user));
+    ul.append(jQuery('<li></li>').text(user)); //user.name?????
   });
-
   jQuery('#users').html(ul);
 });
 
@@ -142,8 +141,9 @@ locationVar.on('click',function(){
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
-    },function(){
+    },function(err){
       locationVar.removeAttr('disabled').text('Send location');
-      alert('Unable to fetch location');
+      alert(`Unable to fetch location >> ${err.code}): ${err.message}`);
+      // alert('Unable to fetch location');
     });
 });
